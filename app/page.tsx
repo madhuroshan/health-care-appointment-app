@@ -1,12 +1,15 @@
 import PatientForm from "@/components/forms/PatientForm";
+import PasskeyModal from "@/components/PasskeyModal";
 import { HeartPulseIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function Home({ searchParams }: SearchParamProps) {
+  const isAdmin = searchParams.admin === "true";
+
   return (
     <div className="flex h-screen max-h-screen">
-      {/* TODO: OTP Verification */}
+      {isAdmin && <PasskeyModal />}
       <section className="remove-scrollbar my-auto container">
         <div className="sub-container max-w-[496px]">
           <div className="flex justify-center items-center gap-2 mb-12 w-fit">
@@ -23,7 +26,7 @@ export default function Home() {
               &copy; 2024 CarePulse
             </p>
 
-            <Link className="text-green-500" href="/admin?=true">
+            <Link className="text-green-500" href="/?admin=true">
               Admin
             </Link>
           </div>
