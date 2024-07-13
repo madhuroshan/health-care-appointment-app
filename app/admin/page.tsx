@@ -1,9 +1,15 @@
 import StatCard from "@/components/StatCard";
+import { columns } from "@/components/table/columns";
+import { DataTable } from "@/components/table/DataTable";
+
+import { getRecentAppointments } from "@/lib/actions/appointment.action";
+
 import { HeartPulseIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const AdminPage = () => {
+const AdminPage = async () => {
+  const appointments = await getRecentAppointments();
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className="admin-header">
@@ -30,23 +36,25 @@ const AdminPage = () => {
         <section className="admin-stat">
           <StatCard
             type="appointments"
-            count={5}
+            count={appointments?.scheduledCounts || 0}
             label="Scheduled Appointments"
             icon="/assets/icons/appointments.svg"
           />
           <StatCard
             type="pending"
-            count={5}
+            count={appointments?.pendingCounts || 0}
             label="Pending Appointments"
             icon="/assets/icons/pending.svg"
           />
           <StatCard
             type="cancelled"
-            count={5}
+            count={appointments?.cancelledCounts || 0}
             label="Cancelled Appointments"
             icon="/assets/icons/cancelled.svg"
           />
         </section>
+
+        <DataTable data={appointments?.documents!} columns={columns} />
       </main>
     </div>
   );
